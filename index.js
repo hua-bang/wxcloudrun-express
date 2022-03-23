@@ -2,8 +2,6 @@ const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
-const { init: initDB, Counter } = require("./db");
-
 const logger = morgan("tiny");
 
 const app = express();
@@ -19,26 +17,17 @@ app.get("/", async (req, res) => {
 
 // 更新计数
 app.post("/api/count", async (req, res) => {
-  const { action } = req.body;
-  if (action === "inc") {
-    await Counter.create();
-  } else if (action === "clear") {
-    await Counter.destroy({
-      truncate: true,
-    });
-  }
   res.send({
     code: 0,
-    data: await Counter.count(),
+    data: 20,
   });
 });
 
 // 获取计数
 app.get("/api/count", async (req, res) => {
-  const result = await Counter.count();
   res.send({
     code: 0,
-    data: result,
+    data: 21,
   });
 });
 
@@ -59,7 +48,6 @@ app.get("/api/wx_openid", async (req, res) => {
 const port = process.env.PORT || 80;
 
 async function bootstrap() {
-  await initDB();
   app.listen(port, () => {
     console.log("启动成功", port);
   });

@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const logger = morgan("tiny");
+const Draw = require('./service/index');
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
@@ -37,6 +38,10 @@ app.get("/api/test", async(req, res) => {
     data: '123'
   });
 });
+
+app.get("/api/draw", async(req, res) => {
+  res.send(Draw());
+})
 
 // 小程序调用，获取微信 Open ID
 app.get("/api/wx_openid", async (req, res) => {
